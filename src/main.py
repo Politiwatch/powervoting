@@ -1,7 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request
-app = Flask(__name__)
+#!/usr/bin/env python3
 
-data = {}
+from flask import Flask, render_template, redirect, url_for, request
+import api
+
+app = Flask(__name__)
 
 @app.route("/")
 def index():
@@ -9,7 +11,9 @@ def index():
 
 @app.route("/results")
 def results():
-    print(request.args)
+    addresses = list(zip(request.args.getlist("address"), request.args.getlist("zipcode")))
+    print(addresses)
+    address_info = [api.get_address_info(address, zipcode) for (address, zipcode) in addresses]
     return render_template("results.html")
 
 if __name__ == '__main__':

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-   
+
 {% block content %}
-    <h1>Your Address is:</h1>
-    <form action="/compare" method="post">
-        <input type ="text" name="address" placeholder="address">
-        <input type ="text" name="zipcode" placeholder="zipcode">
-        <input type ="text" name="address" placeholder="address">
-        <input type ="text" name="zipcode" placeholder="zipcode">
-        <button type ="submit" name="find">Submit</button>
-    </form>
+<h1>Your Address is:</h1>
+<form action="/results" method="GET">
+    <input type="text" name="address" placeholder="address">
+    <input type="text" name="zipcode" placeholder="zipcode">
+    <input type="text" name="address" placeholder="address">
+    <input type="text" name="zipcode" placeholder="zipcode">
+    <button type="submit">Submit</button>
+</form>
 {% endblock %}
