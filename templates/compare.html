@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+   
+{% block content %}
+    <h1>Submit another Address?</h1>
+    <h2>Address 1 is: {{address}}, {{zipcode}}</h2>
+    <form action="/results" method="post">
+        <input type ="text" name="address2" placeholder="address">
+        <input type ="text" name="zipcode2" placeholder="zipcode">
+        <button type ="submit" name="compare">Compare</button>
+    </form>
+{% endblock %}
