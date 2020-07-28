@@ -9,6 +9,3 @@ verify_ssl = true
 flask = "*"
 requests = "*"
 unicodecsv = "*"
-
-[requires]
-python_version = "3.8"

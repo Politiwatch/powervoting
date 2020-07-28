@@ -7,16 +7,19 @@ import re
 with open("data/gen/elections.json", "r") as infile:
     ELECTIONS = json.load(infile)
 
-GOOGLE_API_KEYS = os.getenv("GOOGLE_API_KEYS").split(",")
-
+API_KEYS = os.getenv("API_KEYS").split(",")
 
 def get_address_info(address, zipcode):
     print(zipcode)
     repdata = requests.get(
         "https://www.googleapis.com/civicinfo/v2/representatives",
         params={"address": f"{address} {zipcode}",
-                "key": random.choice(GOOGLE_API_KEYS)},
+                "key": random.choice(API_KEYS)},
     ).json()
+
+    if "normalizedInput" not in repdata:
+        return None
+        #we did this in WAMR, not sure if it's necessary here as well
 
     division_ids = "\n".join(repdata["divisions"].keys())
 
@@ -32,13 +35,12 @@ def get_address_info(address, zipcode):
 
     return {
         "state": state,
-        "district": district
+        "district": district,
+        "input": repdata["normalizedInput"]
     }
-
 
 def get_elections(state, district):
     return list(filter(lambda k: k["state"] == state and k["district"] in [None, "statewide", district], ELECTIONS))
-
 
 def _score(election):
     votes = list(sorted([candidate["votes"]
@@ -58,16 +60,22 @@ def _weighted_score(elections):
     return total_scores / total_weight
 
 def compute_scores(elections):
-    senate = filter(lambda k: k["office"] == "US Senate", elections)
+    senate = list(filter(lambda k: k["office"] == "US Senate", elections))
     house = filter(lambda k: k["office"] == "US House", elections)
     president = filter(lambda k: k["office"] == "US President", elections)
 
-    senate_score = _weighted_score(senate)
+    senate_score = _weighted_score(senate) 
     house_score = _weighted_score(house)
     president_score = _weighted_score(president)
 
+    senate_history = list(senate)
+
+    for election in senate_history:
+        election['score'] = _score(election)
+
     return {
-        "senate": senate_score,
+        "senate": senate_score,   
+        "senate_history": senate_history,    
         "house": house_score,
         "president": president_score,
         "total": (senate_score + house_score + president_score) / 3

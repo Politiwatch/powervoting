@@ -14,8 +14,10 @@ def results():
     addresses = list(zip(request.args.getlist("address"), request.args.getlist("zipcode")))
     locations = [api.get_address_info(address, zipcode) for (address, zipcode) in addresses]
     elections = [api.get_elections(loc["state"], loc["district"]) for loc in locations]
-    scores = [api.compute_scores(elecs) for elecs in elections] 
-    return render_template("results.html", locations=locations, scores=scores)
+    scores = [api.compute_scores(elecs) for elecs in elections]
+    info = list(zip(locations, scores))
+    print(info)
+    return render_template("results.html", locations=locations, scores=scores, info=info)
 
 if __name__ == '__main__':
    app.run(debug = True)
