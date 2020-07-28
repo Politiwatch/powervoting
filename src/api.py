@@ -61,23 +61,32 @@ def _weighted_score(elections):
 
 def compute_scores(elections):
     senate = list(filter(lambda k: k["office"] == "US Senate", elections))
-    house = filter(lambda k: k["office"] == "US House", elections)
-    president = filter(lambda k: k["office"] == "US President", elections)
+    house = list(filter(lambda k: k["office"] == "US House", elections))
+    president = list(filter(lambda k: k["office"] == "US President", elections))
 
     senate_score = _weighted_score(senate) 
     house_score = _weighted_score(house)
     president_score = _weighted_score(president)
 
     senate_history = list(senate)
-
     for election in senate_history:
+        election['score'] = _score(election)
+
+    house_history = list(house)
+    for election in house_history:
+        election['score'] = _score(election)
+
+    president_history = list(president)
+    for election in president_history:
         election['score'] = _score(election)
 
     return {
         "senate": senate_score,   
         "senate_history": senate_history,    
         "house": house_score,
+        "house_history": house_history,
         "president": president_score,
+        "president_history": president_history,
         "total": (senate_score + house_score + president_score) / 3
     }
 

@@ -1,15 +1,5 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="/results" method="GET">
-    <div class="card ~neutral !low max-w-lg">
-        <p class="label">Address to Compare</p>
-        <div class="flex">
-            <input type="text" name="address" placeholder="address" class="input w-2/3 mr-2">
-            <input type="text" name="zipcode" placeholder="zipcode" class="input w-1/3">
-        </div>
-    </div>
-    <hr class="sep">
-    <button type="submit" class="button ~urge !high">Submit</button>
-</form>
+{% include "picker.html" %}
 {% endblock %}
