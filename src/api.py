@@ -7,7 +7,17 @@ import re
 with open("data/gen/elections.json", "r") as infile:
     ELECTIONS = json.load(infile)
 
+
+def _electors(state, year):
+    districts = set()
+    for election in ELECTIONS:
+        if election["office"] == "US House" and election["state"] == state and election["year"] == year:
+            districts.add(election["district"])
+    return len(districts) + 2
+
+
 API_KEYS = os.getenv("API_KEYS").split(",")
+
 
 def get_address_info(address, zipcode):
     print(zipcode)
@@ -19,7 +29,7 @@ def get_address_info(address, zipcode):
 
     if "normalizedInput" not in repdata:
         return None
-        #we did this in WAMR, not sure if it's necessary here as well
+        # we did this in WAMR, not sure if it's necessary here as well
 
     division_ids = "\n".join(repdata["divisions"].keys())
 
@@ -39,58 +49,84 @@ def get_address_info(address, zipcode):
         "input": repdata["normalizedInput"]
     }
 
+
 def get_elections(state, district):
     return list(filter(lambda k: k["state"] == state and k["district"] in [None, "statewide", district], ELECTIONS))
 
-def _score(election):
+
+def _ppv(election):
+    """Power per vote"""
+
+    if election["office"] == "US President":
+        return _electors(election["state"], election["year"]) / election["totalvotes"]
+    else:
+        return 1 / election["totalvotes"]
+
+
+def _compound_score(closeness, ppv):
+    return closeness * ppv
+
+
+def _scores(election) -> dict:
     votes = list(sorted([candidate["votes"]
                          for candidate in election["candidates"]], reverse=True)) + [0, 0]
     totalvotes = election['totalvotes']
-    return 1 - ((votes[0] - votes[1]) / totalvotes)
 
-    #add impact - should this be voters per rep/elector?
+    closeness = 1 - ((votes[0] - votes[1]) / totalvotes)
+    ppv = _ppv(election)
 
-def _weighted_score(elections):
+    return {
+        "closeness": closeness,
+        "ppv": ppv,
+        "compound": _compound_score(closeness, ppv)
+    }
+
+
+def _weighted_closeness_score(elections):
     total_weight = 0
     total_scores = 0
 
     for election in elections:
-        # weight = election["year"] - 1975
         weight = (election["year"] - 1975) ** 2
         total_weight += weight
-        total_scores += _score(election) * weight
+        total_scores += _scores(election)["closeness"] * weight
 
     return total_scores / total_weight
 
-def compute_scores(elections):
-    senate = list(filter(lambda k: k["office"] == "US Senate", elections))
-    house = list(filter(lambda k: k["office"] == "US House", elections))
-    president = list(filter(lambda k: k["office"] == "US President", elections))
 
-    senate_score = _weighted_score(senate) 
-    house_score = _weighted_score(house)
-    president_score = _weighted_score(president)
+def compute_scores(elections):
+    senate = list(sorted(filter(
+        lambda k: k["office"] == "US Senate", elections), key=lambda k: k["year"]))
+    house = list(sorted(filter(
+        lambda k: k["office"] == "US House", elections), key=lambda k: k["year"]))
+    president = list(sorted(filter(
+        lambda k: k["office"] == "US President", elections), key=lambda k: k["year"]))
+
+    senate_score = _compound_score(
+        _weighted_closeness_score(senate), _ppv(senate[-1]))
+    house_score = _compound_score(
+        _weighted_closeness_score(house), _ppv(house[-1]))
+    president_score = _compound_score(
+        _weighted_closeness_score(president), _ppv(president[-1]))
 
     senate_history = list(senate)
     for election in senate_history:
-        election['score'] = _score(election)
+        election['scores'] = _scores(election)
 
     house_history = list(house)
     for election in house_history:
-        election['score'] = _score(election)
+        election['scores'] = _scores(election)
 
     president_history = list(president)
     for election in president_history:
-        election['score'] = _score(election)
+        election['scores'] = _scores(election)
 
     return {
-        "senate": senate_score,   
-        "senate_history": senate_history,    
+        "senate": senate_score,
+        "senate_history": senate_history,
         "house": house_score,
         "house_history": house_history,
         "president": president_score,
         "president_history": president_history,
         "total": (senate_score + house_score + president_score) / 3
     }
-
-    pass
