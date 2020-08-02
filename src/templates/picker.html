@@ -2,12 +2,12 @@
     function addAddress() {
         let inputBox = document.querySelector("#addresses .address-card").cloneNode(true);
         inputBox.querySelectorAll(".input").forEach(input => input.value = "");
-        document.querySelector("#addresses").appendChild(inputBox);
+        document.querySelector("#addresses").insertBefore(inputBox, document.querySelector("#address-add-button"));
     }
 </script>
 <form action="/results" method="GET" class="mx-auto">
     <div class="md:flex items-center">
-        <div class="md:flex" id="addresses">
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-3" id="addresses">
             {% if locations|length > 0 %}
             {% for location in locations %}
             {% include "address_input.html" %}
@@ -15,10 +15,10 @@
             {% else %}
             {% include "address_input.html" %}
             {% endif %}
-        </div>
-        <div class="mb-4">
-            <button onclick="addAddress(); return false;" type="button" class="card ~neutral !low rounded-full w-12 h-12 flex items-center justify-center"><i class="fas fa-lg fa-plus"></i></button>
-            <button type="submit" class="hidden">Submit</button>
+            <div id="address-add-button" class="mt-2">
+                <button onclick="addAddress(); return false;" type="button" class="card ~neutral !low rounded-full w-12 h-12 flex items-center justify-center"><i class="fas fa-lg fa-plus"></i></button>
+                <button type="submit" class="hidden">Submit</button>
+            </div>
         </div>
     </div>
     <hr class="sep">

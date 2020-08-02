@@ -1,8 +1,8 @@
-<article class="address-card mr-4 mb-4">
+<article class="address-card relative">
     <div class="card ~neutral !low max-w-lg">
         <div class="flex">
-            <input type="text" name="address" placeholder="Address" class="input w-2/3 mr-2" value="{% if location %}{{location.input.line1}}{% endif %}">
-            <input type="text" name="zipcode" placeholder="Zipcode" class="input w-1/3" value="{% if location %}{{location.input.zip}}{% endif %}">
+            <input type="text" name="address" required placeholder="Address" class="input w-2/3 mr-2" value="{% if location %}{{location.input.line1}}{% endif %}">
+            <input type="text" name="zipcode" required placeholder="Zipcode" class="input w-1/3" value="{% if location %}{{location.input.zip}}{% endif %}">
         </div>
     </div>
 </article>

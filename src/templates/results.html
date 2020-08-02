@@ -1,31 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 {% include "picker.html" %}
 
 <h3 class="heading text-xl">Overall Results</h3>
-<p> The total score is an equally weighted average of the President, Senate, and House scores, which are each explained below.</p>
+<p>The total score is an equally weighted average of the President, Senate, and House scores, which are each explained below.</p>
 <div class="card ~neutral !low md:flex">
     {% for loc, data in info %}
     <article class="m-2 w-full">
         <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-        <h3 class="heading">{{(data.total * 100) | round | string() | truncate(2, True, '', 0)}}%</h3>
+        <h3 class="heading">{{(data.total * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
     </article>
     {% endfor %}
 </div>
 <hr class="sep">
 
 <h3 class="heading text-xl">House Results</h3>
-<p> The House score is first found by taking the average of the power of an individual vote in the district (1/number of voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and then given an weight that increases linearly to calculate the weighted average.</p>
+<p>The House score is first found by taking the average of the power of an individual vote in the district (1/number of voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and then given an weight that increases linearly to calculate the weighted average.</p>
 <div class="card ~neutral !low md:flex">
     {% for loc, data in info %}
     <article class="m-2 w-full">
         <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-        <h3 class="heading">{{(data.house * 100) | round | string() | truncate(2, True, '', 0)}}%</h3>
+        <h3 class="heading">{{(data.house * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
     </article>
     {% endfor %}
-
 </div>
-<hr class="sep">
+<h3 class="heading text-xl">Senate Results</h3>
+<p>The House score is first found by taking the average of the power of an individual vote in the district (1/number of voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and then given an weight that increases linearly to calculate the weighted average.</p>
+<div class="card ~neutral !low md:flex">
+    {% for loc, data in info %}
+    <article class="m-2 w-full">
+        <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+        <h3 class="heading">{{(data.senate * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
+    </article>
+    {% endfor %}
+</div>
+<h3 class="heading text-xl">President Results</h3>
+<p>The President score is first found by taking the average of the power of an individual vote in the district (1/number of voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and then given an weight that increases linearly to calculate the weighted average.</p>
+<div class="card ~neutral !low md:flex">
+    {% for loc, data in info %}
+    <article class="m-2 w-full">
+        <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+        <h3 class="heading">{{(data.president * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
+    </article>
+    {% endfor %}
+</div>
 {{info}}
 {% endblock %}

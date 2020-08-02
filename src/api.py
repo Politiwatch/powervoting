@@ -55,7 +55,7 @@ def get_elections(state, district):
 
 
 def _ppv(election):
-    """Power per vote"""
+    """Votes per power"""
 
     if election["office"] == "US President":
         return _electors(election["state"], election["year"]) / election["totalvotes"]
@@ -64,7 +64,7 @@ def _ppv(election):
 
 
 def _compound_score(closeness, ppv):
-    return closeness * ppv
+    return closeness * ppv * 1000000
 
 
 def _scores(election) -> dict:
