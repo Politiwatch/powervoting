@@ -53,7 +53,8 @@ def _weighted_score(elections):
     total_scores = 0
 
     for election in elections:
-        weight = election["year"] - 1975
+        # weight = election["year"] - 1975
+        weight = (election["year"] - 1975) ** 2
         total_weight += weight
         total_scores += _score(election) * weight
 
