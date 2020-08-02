@@ -48,6 +48,8 @@ def _score(election):
     totalvotes = election['totalvotes']
     return 1 - ((votes[0] - votes[1]) / totalvotes)
 
+    #add impact - should this be voters per rep/elector?
+
 def _weighted_score(elections):
     total_weight = 0
     total_scores = 0

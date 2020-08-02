@@ -4,8 +4,7 @@
 {% include "picker.html" %}
 
 <h3 class="heading text-xl">Overall Results</h3>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis euismod malesuada ipsum eu tincidunt. Sed
-    turpis eros, ullamcorper vitae metus et, auctor vehicula tellus.</p>
+<p> The total score is an equally weighted average of the President, Senate, and House scores, which are each explained below.</p>
 <div class="card ~neutral !low md:flex">
     {% for loc, data in info %}
     <article class="m-2 w-full">
@@ -17,8 +16,7 @@
 <hr class="sep">
 
 <h3 class="heading text-xl">House Results</h3>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis euismod malesuada ipsum eu tincidunt. Sed
-    turpis eros, ullamcorper vitae metus et, auctor vehicula tellus.</p>
+<p> The House score is first found by taking the average of the power of an individual vote in the district (1/number of voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and then given an weight that increases linearly to calculate the weighted average.</p>
 <div class="card ~neutral !low md:flex">
     {% for loc, data in info %}
     <article class="m-2 w-full">
