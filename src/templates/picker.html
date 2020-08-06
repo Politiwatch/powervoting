@@ -1,11 +1,28 @@
 <script>
+    function updateAddButtonState() {
+        if (document.querySelectorAll(".address-card").length >= 6) {
+            document.querySelector("#picker-add").classList.add("hidden");
+        } else {
+            document.querySelector("#picker-add").classList.remove("hidden");
+        }
+    }
     function addAddress() {
         let inputBox = document.querySelector("#addresses .address-card").cloneNode(true);
         inputBox.querySelectorAll(".input").forEach(input => input.value = "");
         document.querySelector("#addresses").insertBefore(inputBox, document.querySelector("#address-add-button"));
+        updateAddButtonState();
+    }
+
+    function removeAddress(removeButton) {
+        removeButton.closest("article").remove();
+        updateAddButtonState();
+    }
+
+    function showSearchButton() {
+        document.querySelector("#picker-submit").classList.remove("hidden");
     }
 </script>
-<form action="/results" method="GET" class="mx-auto">
+<form action="/results" method="GET" class="mx-auto" onchange="showSearchButton()" oninput="showSearchButton()">
     <div class="md:flex items-center">
         <div class="grid gap-4 grid-cols-1 md:grid-cols-3" id="addresses">
             {% if locations|length > 0 %}
@@ -15,10 +32,13 @@
             {% else %}
             {% include "address_input.html" %}
             {% endif %}
-            <div id="address-add-button" class="mt-2">
-                <button onclick="addAddress(); return false;" type="button" class="card ~neutral !low rounded-full w-12 h-12 flex items-center justify-center"><i class="fas fa-lg fa-plus"></i></button>
-                <button type="submit" class="hidden">Submit</button>
+            <div id="address-add-button" class="flex mt-3">
+                <button onclick="addAddress(); return false;" type="button" class="card ~neutral !low rounded-full w-12 h-12 flex items-center justify-center mr-2" id="picker-add"><i class="fas fa-lg fa-plus"></i></button>
+                <button type="submit" class="card ~urge !high rounded-full h-12 flex items-center justify-center hidden" id="picker-submit" style="transition: all 150ms ease-in-out;">Search...</button>
             </div>
         </div>
     </div>
 </form>
+<script>
+    updateAddButtonState();
+</script>

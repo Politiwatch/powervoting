@@ -3,9 +3,9 @@ function distinct(value, index, self) {
 }
 
 function buildChart(electionSequences, labels, id) {
-    // console.log(electionSequences, labels);
     let ctx = document.getElementById(id).getContext('2d');
-    let colors = chroma.scale(['red', 'navy']).mode('lch').colors(labels.length);
+    // let colors = chroma.scale('Spectral').colors(labels.length);
+    let colors = chroma.scale(['#5DDBCC', '#DB5D67']).mode('lch').colors(labels.length);
     let chart = new Chart(ctx, {
         type: 'line',
         data: {
