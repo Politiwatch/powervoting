@@ -12,11 +12,11 @@
 </style>
 <script>
     let data = {{ info| tojson}};
-    let labels = data.map(x => x[0].input.line1);
+    let labels = data.map(x => `${x[0].input.state} District ${x[0].district} (${x[0].input.zip})`);
 </script>
 <div class="md:flex">
     <div class="sticky top-1 mr-8 md:w-1/3 self-start">
-        <h3 class="heading text-xl">Overall Results</h3>
+        <h3 class="heading mb-2">Overall Results</h3>
         <p> Within the US, your vote has a different power–and impact–depending on where you live. Using the closeness
             and number of voters per position (&lsquo;power per vote&rsquo;) in the House, Senate, and Presidential elections for the addresses you
             input, we calculate the voting power of each address. Higher numbers mean more voting power. </p>
@@ -32,7 +32,7 @@
         </div>
         <hr class="sep h-4">
         <div class="card ~neutral !low">
-            <p class="label mb-2">Average Power per Vote</p>
+            <p class="label mb-2">Average Power Per Vote</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {% for loc, data in info %}
                 <article class="w-full">
@@ -48,7 +48,7 @@
 <hr class="sep md:h-14">
 <div class="md:flex">
     <div class="sticky top-1 mr-8 md:w-1/3 self-start">
-        <h3 class="heading text-xl">House Results</h3>
+        <h3 class="heading mb-2">House Results</h3>
         <p> Voting power in a House election is impacted by the election&rsquo;s historic closeness and the number of
             voters in the district, all of whom elect the same representative. Higher numbers mean more voting power;
             votes in House elections typically have more power than in Senate races, and sometimes even than
@@ -73,7 +73,7 @@
 <hr class="sep md:h-14">
 <div class="md:flex">
     <div class="sticky top-1 mr-8 md:w-1/3 self-start">
-        <h3 class="heading text-xl">Senate Results</h3>
+        <h3 class="heading mb-2">Senate Results</h3>
         <p> Voting power in a Senate election is impacted by the election&rsquo;s historic closeness and the number of
             voters in the statewide district, all of whom vote for one representative per election. Higher numbers mean
             more voting power; votes in Senate elections typically have less power than in House or Presidential races.
@@ -98,7 +98,7 @@
 <hr class="sep md:h-14">
 <div class="md:flex">
     <div class="sticky top-1 mr-8 md:w-1/3 self-start">
-        <h3 class="heading text-xl">President Results</h3>
+        <h3 class="heading mb-2">Presidential Results</h3>
         <p> Voting power in a Presidential election is impacted by the election&rsquo;s historic closeness and the
             number of voters per elector in the statewide district. Higher numbers mean more voting power; votes in
             Presidential elections typically have more power than in House or Senate races, though House can sometimes
