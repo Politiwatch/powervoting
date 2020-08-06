@@ -18,8 +18,8 @@
     <div class="sticky top-1 mr-8 md:w-1/3 self-start">
         <h3 class="heading text-xl">Overall Results</h3>
         <p> Within the US, your vote has a different power–and impact–depending on where you live. Using the closeness
-            and number of voters per position in the House, Senate, and Presidential elections for the addresses you
-            input, we calculate the voting power of each address. (Higher numbers mean more voting power.) </p>
+            and number of voters per position (&lsquo;power per vote&rsquo;) in the House, Senate, and Presidential elections for the addresses you
+            input, we calculate the voting power of each address. Higher numbers mean more voting power. </p>
     </div>
     <div class="md:w-2/3 self-start">
         <div class="card ~neutral !low grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -32,7 +32,7 @@
         </div>
         <hr class="sep h-4">
         <div class="card ~neutral !low">
-            <p class="label mb-2">Aggregate Vote Influence</p>
+            <p class="label mb-2">Average Power per Vote</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {% for loc, data in info %}
                 <article class="w-full">
@@ -64,6 +64,7 @@
             {% endfor %}
         </div>
         <div class="card ~neutral !low mt-2">
+            <p class="label mb-2">Closeness History</p>
             <canvas id="houseChart" height="100"></canvas>
             <script>buildChart(data.map(x => x[1].house_history), labels, "houseChart")</script>
         </div>
@@ -88,6 +89,7 @@
             {% endfor %}
         </div>
         <div class="card ~neutral !low mt-2">
+            <p class="label mb-2">Closeness History</p>
             <canvas id="senateChart" height="100"></canvas>
             <script>buildChart(data.map(x => x[1].senate_history), labels, "senateChart")</script>
         </div>
@@ -99,7 +101,7 @@
         <h3 class="heading text-xl">President Results</h3>
         <p> Voting power in a Presidential election is impacted by the election&rsquo;s historic closeness and the
             number of voters per elector in the statewide district. Higher numbers mean more voting power; votes in
-            Presidential elections typically have less power than in House or Senate races, though House can sometimes
+            Presidential elections typically have more power than in House or Senate races, though House can sometimes
             be more powerful.</p>
     </div>
     <div class="md:w-2/3 self-start">
@@ -112,6 +114,7 @@
             {% endfor %}
         </div>
         <div class="card ~neutral !low mt-2">
+            <p class="label mb-2">Closeness History</p>
             <canvas id="presidentChart" height="100"></canvas>
             <script>buildChart(data.map(x => x[1].president_history), labels, "presidentChart")</script>
         </div>

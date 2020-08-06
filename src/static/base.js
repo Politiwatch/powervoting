@@ -9,11 +9,11 @@ function buildChart(electionSequences, labels, id) {
     let chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: electionSequences.map(s => s.map(e => e.year)).flat().filter(distinct),
+            labels: electionSequences.map(s => s.map(e => e.year)).flat().filter(distinct).sort((a, b) => a - b),
             datasets: electionSequences.map((s, i) => {
                 return {
                     label: labels[i],
-                    data: s.map(e => {
+                    data: s.sort((a, b) => a.year - b.year).map(e => {
                         return {
                             x: e.year,
                             y: (e.scores.closeness * 100).toFixed(2),
