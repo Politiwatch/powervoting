@@ -17,7 +17,7 @@ function buildChart(electionSequences, labels, id) {
                         return {
                             x: e.year,
                             y: (e.scores.closeness * 100).toFixed(2),
-                            label: `${labels[i]}: ${(e.scores.closeness * 100).toFixed(2)}% Closeness (${e.totalvotes.toLocaleString()} votes, ${e.candidates.length} candidates)`,
+                            label: `${labels[i]}: ${(e.scores.closeness * 100).toFixed(2)}% Closeness (${e.totalvotes.toLocaleString()} votes)`,
                         }
                     }),
                     borderColor: colors[i],

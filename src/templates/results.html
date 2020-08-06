@@ -1,66 +1,121 @@
 {% extends "base.html" %}
 
-{% block content %}
-
+{% block precontent %}
 {% include "picker.html" %}
+{% endblock %}
+
+{% block content %}
+<style>
+    .top-1 {
+        top: 1rem;
+    }
+</style>
 <script>
     let data = {{ info| tojson}};
     let labels = data.map(x => x[0].input.line1);
 </script>
-<h3 class="heading text-xl">Overall Results</h3>
-<p>The total score is an equally weighted average of the President, Senate, and House scores, which are each explained
-    below.</p>
-<div class="card ~neutral !low md:flex">
-    {% for loc, data in info %}
-    <article class="m-2 w-full">
-        <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-        <h3 class="heading">{{(data.total * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
-    </article>
-    {% endfor %}
+<div class="md:flex">
+    <div class="sticky top-1 mr-8 md:w-1/3 self-start">
+        <h3 class="heading text-xl">Overall Results</h3>
+        <p> Within the US, your vote has a different power–and impact–depending on where you live. Using the closeness
+            and number of voters per position in the House, Senate, and Presidential elections for the addresses you
+            input, we calculate the voting power of each address. (Higher numbers mean more voting power.) </p>
+    </div>
+    <div class="md:w-2/3 self-start">
+        <div class="card ~neutral !low grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for loc, data in info %}
+            <article class="w-full">
+                <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+                <h3 class="heading">{{(data.total * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
+            </article>
+            {% endfor %}
+        </div>
+        <hr class="sep h-4">
+        <div class="card ~neutral !low">
+            <p class="label mb-2">Aggregate Vote Influence</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {% for loc, data in info %}
+                <article class="w-full">
+                    <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+                    <h3 class="heading text-xl">{{"%.2f"|format(data.ppv_total * 1000000)}} <span
+                            class="text-neutral-600 text-xs">&times; 10<sup>-6</sup></span></h3>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
-<hr class="sep">
+<hr class="sep md:h-14">
+<div class="md:flex">
+    <div class="sticky top-1 mr-8 md:w-1/3 self-start">
+        <h3 class="heading text-xl">House Results</h3>
+        <p> Voting power in a House election is impacted by the election&rsquo;s historic closeness and the number of
+            voters in the district, all of whom elect the same representative. Higher numbers mean more voting power;
+            votes in House elections typically have more power than in Senate races, and sometimes even than
+            Presidential races.</p>
+    </div>
+    <div class="md:w-2/3 self-start">
+        <div class="card ~neutral !low md:flex">
+            {% for loc, data in info %}
+            <article class="m-2 w-full">
+                <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+                <h3 class="heading">{{(data.house * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="card ~neutral !low mt-2">
+            <canvas id="houseChart" height="100"></canvas>
+            <script>buildChart(data.map(x => x[1].house_history), labels, "houseChart")</script>
+        </div>
+    </div>
+</div>
+<hr class="sep md:h-14">
+<div class="md:flex">
+    <div class="sticky top-1 mr-8 md:w-1/3 self-start">
+        <h3 class="heading text-xl">Senate Results</h3>
+        <p> Voting power in a Senate election is impacted by the election&rsquo;s historic closeness and the number of
+            voters in the statewide district, all of whom vote for one representative per election. Higher numbers mean
+            more voting power; votes in Senate elections typically have less power than in House or Presidential races.
+        </p>
+    </div>
+    <div class="md:w-2/3 self-start">
+        <div class="card ~neutral !low md:flex">
+            {% for loc, data in info %}
+            <article class="m-2 w-full">
+                <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+                <h3 class="heading">{{(data.senate * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="card ~neutral !low mt-2">
+            <canvas id="senateChart" height="100"></canvas>
+            <script>buildChart(data.map(x => x[1].senate_history), labels, "senateChart")</script>
+        </div>
+    </div>
+</div>
+<hr class="sep md:h-14">
+<div class="md:flex">
+    <div class="sticky top-1 mr-8 md:w-1/3 self-start">
+        <h3 class="heading text-xl">President Results</h3>
+        <p> Voting power in a Presidential election is impacted by the election&rsquo;s historic closeness and the
+            number of voters per elector in the statewide district. Higher numbers mean more voting power; votes in
+            Presidential elections typically have less power than in House or Senate races, though House can sometimes
+            be more powerful.</p>
+    </div>
+    <div class="md:w-2/3 self-start">
+        <div class="card ~neutral !low md:flex">
+            {% for loc, data in info %}
+            <article class="m-2 w-full">
+                <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+                <h3 class="heading">{{(data.president * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="card ~neutral !low mt-2">
+            <canvas id="presidentChart" height="100"></canvas>
+            <script>buildChart(data.map(x => x[1].president_history), labels, "presidentChart")</script>
+        </div>
+    </div>
+</div>
 
-<h3 class="heading text-xl">House Results</h3>
-<p>The House score is first found by taking the average of the power of an individual vote in the district (1/number of
-    voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and then
-    given an weight that increases linearly to calculate the weighted average.</p>
-<div class="card ~neutral !low md:flex my-2">
-    {% for loc, data in info %}
-    <article class="m-2 w-full">
-        <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-        <h3 class="heading">{{(data.house * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
-    </article>
-    {% endfor %}
-</div>
-<div class="card ~neutral !low">
-    <details>
-        <summary>Show History</summary>
-        <canvas id="houseChart"></canvas>
-        <script>buildChart(data.map(x => x[1].house_history), labels, "houseChart")</script>
-    </details>
-</div>
-<h3 class="heading text-xl">Senate Results</h3>
-<p>The House score is first found by taking the average of the power of an individual vote in the district (1/number of
-    voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and then
-    given an weight that increases linearly to calculate the weighted average.</p>
-<div class="card ~neutral !low md:flex">
-    {% for loc, data in info %}
-    <article class="m-2 w-full">
-        <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-        <h3 class="heading">{{(data.senate * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
-    </article>
-    {% endfor %}
-</div>
-<h3 class="heading text-xl">President Results</h3>
-<p>The President score is first found by taking the average of the power of an individual vote in the district (1/number
-    of voters) and the closeness of the election (). These values are taken for each election from 1976 to 2018, and
-    then given an weight that increases linearly to calculate the weighted average.</p>
-<div class="card ~neutral !low md:flex">
-    {% for loc, data in info %}
-    <article class="m-2 w-full">
-        <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-        <h3 class="heading">{{(data.president * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
-    </article>
-    {% endfor %}
-</div>
 {% endblock %}

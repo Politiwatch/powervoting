@@ -55,7 +55,7 @@ def get_elections(state, district):
 
 
 def _ppv(election):
-    """Votes per power"""
+    """Power per vote"""
 
     if election["office"] == "US President":
         return _electors(election["state"], election["year"]) / election["totalvotes"]
@@ -128,5 +128,9 @@ def compute_scores(elections):
         "house_history": house_history,
         "president": president_score,
         "president_history": president_history,
-        "total": (senate_score + house_score + president_score) / 3
+        "total": (senate_score + house_score + president_score) / 3,
+        "ppv_total": (_ppv(senate[-1]) + _ppv(house[-1]) + _ppv(president[-1])) / 3,
+        "ppv_senate": _ppv(senate[-1]),
+        "ppv_house": _ppv(house[-1]),
+        "ppv_president": _ppv(president[-1]),
     }
