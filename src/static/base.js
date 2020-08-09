@@ -4,8 +4,11 @@ function distinct(value, index, self) {
 
 function buildChart(electionSequences, labels, id) {
     let ctx = document.getElementById(id).getContext('2d');
-    // let colors = chroma.scale('Spectral').colors(labels.length);
-    let colors = chroma.scale(['#5DDBCC', '#DB5D67']).mode('lch').colors(labels.length);
+    // let colors = chroma.scale(['#00a6a8', '#457bd5', '#3659da', '#e82168', '#c61e7e', '#8e28b1']).colors(labels.length);
+    // let colors = chroma.scale(['#00a6a8', '#e82168']).mode('lch').colors(labels.length);
+    // let colors = chroma.scale(['#99d594', '#2747db', '#ef40ae', '#EA5252', '#fc8d59']).colors(labels.length);
+    // let colors = chroma.scale(['#d53e4f','#fc8d59','#FFDA70','#CDE160','#89D583','#3288bd']).mode('rgb').colors(labels.length);
+    let colors = chroma.scale(['#7B55A7', '#d53e4f','#fc8d59','#FFDA70','#89D583','#3288bd']).mode('rgb').colors(labels.length);
     let chart = new Chart(ctx, {
         type: 'line',
         data: {
