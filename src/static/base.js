@@ -49,3 +49,25 @@ function buildChart(electionSequences, labels, id) {
         }
     });
 }
+
+function highlightComparisons() {
+    let comparisons = [...document.querySelectorAll(".comparison")];
+    let groups = comparisons.map(e => e.getAttribute("data-comparison-group")).filter(distinct);
+    for (let group of groups) {
+        let highest = -1;
+        let highestElem = null;
+        let elems = document.querySelectorAll(`.comparison[data-comparison-group="${group}"]`);
+        if (elems.length > 1) {
+            for (let elem of elems) {
+                let val = parseFloat(elem.textContent);
+                if (val > highest) {
+                    highest = val;
+                    highestElem = elem;
+                }
+            }
+            highestElem.classList.add("comparison-highest-in-group");
+        }
+    }
+}
+
+window.addEventListener("load", highlightComparisons);

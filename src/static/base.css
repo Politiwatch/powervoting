@@ -1,0 +1,13 @@
+.comparison-highest-in-group::after {
+    content: " \2713";
+    color: var(--color-positive-600-fallback);
+    font-size: 18px;
+}
+
+.comparison-highest-in-group {
+    color: var(--color-positive-600-fallback);
+}
+
+.top-1 {
+    top: 1rem;
+}

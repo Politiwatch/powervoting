@@ -15,7 +15,7 @@ def e500(err):
 
 @app.route("/")
 def index():
-    return render_template("index.html", locations=[])
+    return render_template("index.html", locations=[], title="How much does your vote count")
 
 @app.route("/results")
 def results():
@@ -25,8 +25,7 @@ def results():
     scores = [api.compute_scores(elecs) for elecs in elections]
     info = list([[location, score] for location, score in zip(locations, scores)])
     #everything is included in 'info', since it zips locations (which includes input) and scores (which includes history)
-    print(info)
-    return render_template("results.html", locations=locations, scores=scores, info=info)
+    return render_template("results.html", locations=locations, scores=scores, info=info, title="District comparison")
 
 if __name__ == '__main__':
-   app.run(debug = False)
+   app.run(debug = True)

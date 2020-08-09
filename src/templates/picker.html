@@ -32,9 +32,9 @@
             {% else %}
             {% include "address_input.html" %}
             {% endif %}
-            <div id="address-add-button" class="flex mt-3">
-                <button onclick="addAddress(); return false;" type="button" class="card ~neutral !low rounded-full w-12 h-12 flex items-center justify-center mr-2" id="picker-add"><i class="fas fa-lg fa-plus"></i></button>
-                <button type="submit" class="card ~urge !high rounded-full h-12 flex items-center justify-center hidden" id="picker-submit" style="transition: all 150ms ease-in-out;">Search...</button>
+            <div id="address-add-button" class="flex items-center">
+                <button onclick="addAddress(); return false;" type="button" class="appearance-none" id="picker-add"><i class="fas fa-lg fa-plus"></i></button>
+                <button type="submit" class="ml-3 card ~neutral !low rounded-full h-12 flex items-center justify-center hidden" id="picker-submit" style="transition: all 150ms ease-in-out;">Search...</button>
             </div>
         </div>
     </div>

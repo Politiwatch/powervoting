@@ -129,6 +129,7 @@ def compute_scores(elections):
         "president": president_score,
         "president_history": president_history,
         "total": (senate_score + house_score + president_score) / 3,
+        "closeness_total": (_weighted_closeness_score(senate) + _weighted_closeness_score(house) + _weighted_closeness_score(president)) / 3,
         "ppv_total": (_ppv(senate[-1]) + _ppv(house[-1]) + _ppv(president[-1])) / 3,
         "ppv_senate": _ppv(senate[-1]),
         "ppv_house": _ppv(house[-1]),
