@@ -31,7 +31,7 @@
                 <article class="w-full">
                     <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
                     <h3 class="heading comparison" data-comparison-group="overall">
-                        {{(data.total * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
+                        {{"%.0f"|format(data.total * 100)}}</h3>
                 </article>
                 {% endfor %}
             </div>
@@ -72,37 +72,9 @@
             closeness. Higher numbers mean more voting power and more power per vote (PPV).</p>
     </div>
     <div class="md:w-2/3 self-start">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Voting Power Score <span
-                class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span></p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {% for loc, data in info %}
-                <article class="w-full">
-                    <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-                    <h3 class="heading comparison" data-comparison-group="house">{{(data.house * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-        <hr class="sep h-4">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Power Per Vote <span
-                class="text-neutral-600 text-xs">&times; 10<sup>-6</sup></span></p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {% for loc, data in info %}
-                <article class="w-full">
-                    <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-                    <h3 class="heading text-xl comparison" data-comparison-group="house-ppv">{{"%.2f"|format(data.ppv_house * 1000000)}}</h3>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-        <hr class="sep h-4">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Closeness History</p>
-            <canvas id="houseChart" height="100"></canvas>
-            <script>buildChart(data.map(x => x[1].house_history), labels, "houseChart")</script>
-        </div>
+        {% with group="house" %}
+        {% include "result_group.html" %}
+        {% endwith %}
     </div>
 </div>
 <hr class="sep md:h-14">
@@ -115,37 +87,9 @@
         </p>
     </div>
     <div class="md:w-2/3 self-start">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Voting Power Score <span
-                class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span></p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {% for loc, data in info %}
-                <article class="w-full">
-                    <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-                    <h3 class="heading comparison" data-comparison-group="senate">{{(data.senate * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-        <hr class="sep h-4">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Power Per Vote <span
-                class="text-neutral-600 text-xs">&times; 10<sup>-6</sup></span></p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {% for loc, data in info %}
-                <article class="w-full">
-                    <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-                    <h3 class="heading text-xl comparison" data-comparison-group="senate-ppv">{{"%.2f"|format(data.ppv_senate * 1000000)}}</h3>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-        <hr class="sep h-4">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Closeness History</p>
-            <canvas id="senateChart" height="100"></canvas>
-            <script>buildChart(data.map(x => x[1].senate_history), labels, "senateChart")</script>
-        </div>
+        {% with group="senate" %}
+        {% include "result_group.html" %}
+        {% endwith %}
     </div>
 </div>
 <hr class="sep md:h-14">
@@ -157,37 +101,9 @@
             numbers mean more voting power and more power per vote (PPV).</p>
     </div>
     <div class="md:w-2/3 self-start">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Voting Power Score <span
-                class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span></p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {% for loc, data in info %}
-                <article class="w-full">
-                    <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-                    <h3 class="heading comparison" data-comparison-group="president">{{(data.president * 100) | round | string() | truncate(2, True, '', 0)}}</h3>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-        <hr class="sep h-4">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Power Per Vote <span
-                class="text-neutral-600 text-xs">&times; 10<sup>-6</sup></span></p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {% for loc, data in info %}
-                <article class="w-full">
-                    <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-                    <h3 class="heading text-xl comparison" data-comparison-group="president-ppv">{{"%.2f"|format(data.ppv_president * 1000000)}}</h3>
-                </article>
-                {% endfor %}
-            </div>
-        </div>
-        <hr class="sep h-4">
-        <div class="card ~neutral !low">
-            <p class="label mb-2">Closeness History</p>
-            <canvas id="presidentChart" height="100"></canvas>
-            <script>buildChart(data.map(x => x[1].president_history), labels, "presidentChart")</script>
-        </div>
+        {% with group="president" %}
+        {% include "result_group.html" %}
+        {% endwith %}
     </div>
 </div>
 
