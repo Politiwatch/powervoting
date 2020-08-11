@@ -27,6 +27,7 @@ function buildChart(electionSequences, labels, id) {
             }),
         },
         options: {
+            maintainAspectRatio: false,
             scales: {
                 yAxes: [{
                     ticks: {

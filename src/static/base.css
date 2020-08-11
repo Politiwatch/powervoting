@@ -21,3 +21,9 @@
 .top-1 {
     top: 1rem;
 }
+
+@media screen and (min-width: 769px) {
+    .desktop-limited-height {
+        max-height: 400px;
+    }
+}
