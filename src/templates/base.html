@@ -13,7 +13,8 @@
   <meta property="og:site_name" content="PowerVoting" />
   <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/a17t@latest/dist/a17t.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/a17t@latest/dist/tailwind.css">
   <link rel="stylesheet" href="/static/base.css">
@@ -28,12 +29,30 @@
 <body class="max-w-full overflow-x-hidden section">
   <div class="section ~urge !high">
     <div class="max-w-screen-lg mx-auto pt-4 pb-10 md:pt-6 md:pb-16 px-6">
-      <a href="/">
-        <span class="icon mr-2">
-          <i class="fas fa-balance-scale-right"></i>
+      <div class="flex justify-between">
+        <a href="/">
+          <span class="icon mr-2">
+            <i class="fas fa-balance-scale-right"></i>
+          </span>
+          <span class="font-black">PowerVoting</span>
+        </a>
+        <span class='dropdown' tabindex='0'>
+          <span class='button ~urge !high'>
+            <span class>Featured</span>
+            <span class='ml-3 chev'></span>
+          </span>
+          <div class='dropdown-display right-0'>
+            <div class="card ~neutral !low mt-2" style="min-width: 150px;">
+              <ul class="content">
+                <li><a class="mr-4"
+                    href="/results?address=526+Market+Street&zipcode=19106&address=1224+South+Patrick+Drive&zipcode=32925">PA-3, FL-8</a></li>
+                <li><a class="mr-4"
+                    href="/results?address=5555+Hermann+Park+Drive&zipcode=77030&address=1201+Mason+Street&zipcode=94108">TX-9, CA-12</a></li>
+              </ul>
+            </div>
+          </div>
         </span>
-        <span class="font-black">PowerVoting</span>
-      </a>
+      </div>
       <hr class="sep">
       {% block precontent %}
       {% endblock %}
@@ -51,7 +70,8 @@
         <p class="font-black">&copy; 2020 <a href="https://politiwatch.org">Politiwatch</a>.</p>
         <p>PowerVoting does not guarantee the accuracy of the materials on this site.</p>
         <p>PowerVoting is a <a href="https://politiwatch.org">Politiwatch</a> project led by Leyla Jacoby.</p>
-        <p>Contact <a href="mailto:secure@politiwatch.org">secure@politiwatch.org</a> for questions, comments, and help.</p>
+        <p>Contact <a href="mailto:secure@politiwatch.org">secure@politiwatch.org</a> for questions, comments, and help.
+        </p>
         <p>This site collects minimal user analytics using <a href="https://github.com/milesmcc/shynet">Shynet</a>.</p>
       </div>
       <div class="md:w-2/3 content text-xs">
@@ -64,9 +84,11 @@
           the district since 1976, then displayed as a chart on the results page. The overall closeness score for the
           district is a weighted average of these individual election scores, with increasingly recent elections
           weighted according to the square of the number of years since 1975.</p>
-        <p>The power per vote (PPV) is calculated by dividing the average units of power in an election (1 for house and senate
+        <p>The power per vote (PPV) is calculated by dividing the average units of power in an election (1 for house and
+          senate
           elections, the number of electors in the state for presidential elections) over the two most recent election’s
-          turnouts in the district (or, in the case of senate and presidential elections, the state). More simply, this metric quantifies the ‘slice’ of the representative or elector that
+          turnouts in the district (or, in the case of senate and presidential elections, the state). More simply, this
+          metric quantifies the ‘slice’ of the representative or elector that
           an individual vote corresponds to.</p>
         <p>The overall impact score is the product of the overall closeness score and the most recent PPV score for the
           district multiplied by one million (to make the number more accessible and intuitive). A higher impact score
