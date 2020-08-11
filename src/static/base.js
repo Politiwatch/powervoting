@@ -14,9 +14,10 @@ function buildChart(electionSequences, labels, id) {
                     label: labels[i],
                     data: s.sort((a, b) => a.year - b.year).map(e => {
                         return {
-                            x: e.year,
+                            x: parseInt(e.year),
                             y: (e.scores.closeness * 100).toFixed(2),
-                            label: `${labels[i]}: ${(e.scores.closeness * 100).toFixed(2)}% Closeness (${e.totalvotes.toLocaleString()} votes)`,
+                            title: `${e.year}: ${labels[i]}`,
+                            label: `${(e.scores.closeness * 100).toFixed(2)}% Closeness (${e.totalvotes.toLocaleString()} votes)`,
                         }
                     }),
                     borderColor: colors[i],
@@ -40,6 +41,9 @@ function buildChart(electionSequences, labels, id) {
                     label: function (tooltipItem, data) {
                         return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].label;
                     },
+                    title: function (tooltipItems, data) {
+                        return data.datasets[tooltipItems[0].datasetIndex].data[tooltipItems[0].index].title;
+                    }
                 }
             },
         }
