@@ -27,6 +27,8 @@ def get_address_info(address, zipcode):
                 "key": random.choice(API_KEYS)},
     ).json()
 
+    print(repdata)
+
     if "normalizedInput" not in repdata:
         return None
         # we did this in WAMR, not sure if it's necessary here as well
@@ -51,20 +53,23 @@ def get_address_info(address, zipcode):
 
 
 def get_elections(state, district):
-    return list(filter(lambda k: k["state"] == state and k["district"] in [None, "statewide", district], ELECTIONS))
+    return list(filter(lambda k: k["state"] == state and k["district"] in [None, "statewide", district, "0"], ELECTIONS))
 
 
 def _ppv(election):
     """Power per vote"""
 
     if election["office"] == "US President":
-        return _electors(election["state"], election["year"]) / election["totalvotes"]
+        return _electors(election["state"], election["year"]) / max(1, election["totalvotes"])
     else:
-        return 1 / election["totalvotes"]
+        return 1 / max(1, election["totalvotes"])
 
+def _current_ppv(elections):
+    processed_elections = sorted(filter(lambda k: k["totalvotes"] > 1, elections), key=lambda k: k["year"])
+    return (sum([_ppv(elec) for elec in processed_elections[-2:]]) / len(processed_elections[-2:]))
 
 def _compound_score(closeness, ppv):
-    return closeness * ppv * 1000000
+    return closeness * ppv * 10000000
 
 
 def _scores(election) -> dict:
@@ -72,7 +77,7 @@ def _scores(election) -> dict:
                          for candidate in election["candidates"]], reverse=True)) + [0, 0]
     totalvotes = election['totalvotes']
 
-    closeness = 1 - ((votes[0] - votes[1]) / totalvotes)
+    closeness = 1 - ((votes[0] - votes[1]) / max(1, totalvotes))
     ppv = _ppv(election)
 
     return {
@@ -103,11 +108,11 @@ def compute_scores(elections):
         lambda k: k["office"] == "US President", elections), key=lambda k: k["year"]))
 
     senate_score = _compound_score(
-        _weighted_closeness_score(senate), _ppv(senate[-1]))
+        _weighted_closeness_score(senate), _current_ppv(senate))
     house_score = _compound_score(
-        _weighted_closeness_score(house), _ppv(house[-1]))
+        _weighted_closeness_score(house), _current_ppv(house))
     president_score = _compound_score(
-        _weighted_closeness_score(president), _ppv(president[-1]))
+        _weighted_closeness_score(president), _current_ppv(president))
 
     senate_history = list(senate)
     for election in senate_history:
@@ -130,8 +135,8 @@ def compute_scores(elections):
         "president_history": president_history,
         "total": (senate_score + house_score + president_score) / 3,
         "closeness_total": (_weighted_closeness_score(senate) + _weighted_closeness_score(house) + _weighted_closeness_score(president)) / 3,
-        "ppv_total": (_ppv(senate[-1]) + _ppv(house[-1]) + _ppv(president[-1])) / 3,
-        "ppv_senate": _ppv(senate[-1]),
-        "ppv_house": _ppv(house[-1]),
-        "ppv_president": _ppv(president[-1]),
+        "ppv_total": (_current_ppv(senate) + _current_ppv(house) + _current_ppv(president)) / 3,
+        "ppv_senate": _current_ppv(senate),
+        "ppv_house": _current_ppv(house),
+        "ppv_president": _current_ppv(president),
     }

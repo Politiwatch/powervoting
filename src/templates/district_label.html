@@ -1,0 +1,9 @@
+{{loc.state|upper}}
+{% if loc.district %}
+District {{loc.district}}
+{% else %}
+Statewide
+{% endif %}
+{% if loc.input.zip %}
+({{loc.input.zip}})
+{% endif %}

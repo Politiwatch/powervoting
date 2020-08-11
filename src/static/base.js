@@ -4,10 +4,6 @@ function distinct(value, index, self) {
 
 function buildChart(electionSequences, labels, id) {
     let ctx = document.getElementById(id).getContext('2d');
-    // let colors = chroma.scale(['#00a6a8', '#457bd5', '#3659da', '#e82168', '#c61e7e', '#8e28b1']).colors(labels.length);
-    // let colors = chroma.scale(['#00a6a8', '#e82168']).mode('lch').colors(labels.length);
-    // let colors = chroma.scale(['#99d594', '#2747db', '#ef40ae', '#EA5252', '#fc8d59']).colors(labels.length);
-    // let colors = chroma.scale(['#d53e4f','#fc8d59','#FFDA70','#CDE160','#89D583','#3288bd']).mode('rgb').colors(labels.length);
     let colors = chroma.scale(['#7B55A7', '#d53e4f','#fc8d59','#FFDA70','#89D583','#3288bd']).mode('rgb').colors(labels.length);
     let chart = new Chart(ctx, {
         type: 'line',
@@ -55,17 +51,23 @@ function highlightComparisons() {
     let groups = comparisons.map(e => e.getAttribute("data-comparison-group")).filter(distinct);
     for (let group of groups) {
         let highest = -1;
-        let highestElem = null;
+        let highestElems = [];
         let elems = document.querySelectorAll(`.comparison[data-comparison-group="${group}"]`);
         if (elems.length > 1) {
             for (let elem of elems) {
                 let val = parseFloat(elem.textContent);
                 if (val > highest) {
                     highest = val;
-                    highestElem = elem;
+                    highestElems = [elem];
+                } else if (val == highest) {
+                    highestElems.push(elem);
                 }
             }
-            highestElem.classList.add("comparison-highest-in-group");
+            if (highestElems.length > 1) {
+                highestElems.forEach(x => x.classList.add("comparison-tie"));
+            } else {
+                highestElems.forEach(x => x.classList.add("comparison-highest-in-group"));
+            }
         }
     }
 }
