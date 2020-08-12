@@ -1,0 +1,58 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "powervoting-webserver"
+  labels:
+    app: "powervoting-webserver"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "powervoting-webserver"
+  template:
+    metadata:
+      labels:
+        app: "powervoting-webserver"
+    spec:
+      tolerations:
+      - key: kubernetes.azure.com/scalesetpriority
+        value: spot
+        effect: NoSchedule
+      containers:
+      - name: "powervoting"
+        image: "politiwatch/powervoting:latest"
+        env:
+        - name: API_KEYS
+          valueFrom:
+            secretKeyRef:
+              name: google-civics-credentials
+              key: api_keys
+        - name: PORT
+          value: "80"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: powervoting-webserver-service  
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: powervoting-webserver
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: powervoting-webserver-ingress
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: powervoting.org
+    http:
+      paths:
+      - backend:
+          serviceName: powervoting-webserver-service
+          servicePort: 80
+        path: /

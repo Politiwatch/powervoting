@@ -8,6 +8,22 @@
     color: var(--color-positive-600-fallback);
 }
 
+.comparison-tie::after {
+    content: " \2713 Tie";
+    color: var(--color-info-600-fallback);
+    font-size: 12px;
+}
+
+.comparison-tie {
+    color: var(--color-info-600-fallback);
+}
+
 .top-1 {
     top: 1rem;
+}
+
+@media screen and (min-width: 769px) {
+    .desktop-limited-height {
+        max-height: 400px;
+    }
 }

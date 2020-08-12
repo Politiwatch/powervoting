@@ -15,7 +15,7 @@ def e500(err):
 
 @app.route("/")
 def index():
-    return render_template("index.html", locations=[], title="How much does your vote count")
+    return render_template("index.html", locations=[], title="How much does your vote count?")
 
 @app.route("/results")
 def results():

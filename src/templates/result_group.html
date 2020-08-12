@@ -1,21 +1,21 @@
 <div class="card ~neutral !low">
-    <p class="label mb-2">Voting Power Score <span class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span></p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <p class="label mb-4">Voting Power Score <span class="text-neutral-600 text-xs">&times; 10<sup>7</sup></span></p>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         {% for loc, data in info %}
         <article class="w-full">
-            <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
-            <h3 class="heading comparison" data-comparison-group="{{group}}">{{"%.0f"|format(data[group] * 100)}}</h3>
+            <p class="support">{% include "district_label.html" %}</p>
+            <h3 class="heading comparison" data-comparison-group="{{group}}">{{"%.1f"|format(data[group])}}</h3>
         </article>
         {% endfor %}
     </div>
 </div>
 <hr class="sep h-4">
 <div class="card ~neutral !low">
-    <p class="label mb-2">Power Per Vote <span class="text-neutral-600 text-xs">&times; 10<sup>-6</sup></span></p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <p class="label mb-4">Power Per Vote <span class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span></p>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         {% for loc, data in info %}
         <article class="w-full">
-            <p class="support">{{loc.state|upper}} District {{loc.district}} ({{loc.input.zip}})</p>
+            <p class="support">{% include "district_label.html" %}</p>
             <h3 class="heading text-xl comparison" data-comparison-group="{{group}}-ppv">
                 {{"%.2f"|format(data["ppv_"+group] * 1000000)}}</h3>
         </article>
@@ -23,8 +23,8 @@
     </div>
 </div>
 <hr class="sep h-4">
-<div class="card ~neutral !low">
-    <p class="label mb-2">Closeness History</p>
-    <canvas id="{{group}}Chart" height="100"></canvas>
+<div class="card ~neutral !low desktop-limited-height">
+    <p class="label mb-4">Closeness History</p>
+    <canvas id="{{group}}Chart"></canvas>
     <script>buildChart(data.map(x => x[1].{{ group }}_history), labels, "{{group}}Chart")</script>
 </div>

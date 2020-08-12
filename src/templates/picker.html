@@ -1,14 +1,13 @@
 <script>
     function updateAddButtonState() {
-        if (document.querySelectorAll(".address-card").length >= 6) {
+        if (document.querySelectorAll("#addresses .address-card").length >= 6) {
             document.querySelector("#picker-add").classList.add("hidden");
         } else {
             document.querySelector("#picker-add").classList.remove("hidden");
         }
     }
     function addAddress() {
-        let inputBox = document.querySelector("#addresses .address-card").cloneNode(true);
-        inputBox.querySelectorAll(".input").forEach(input => input.value = "");
+        let inputBox = document.querySelector("#address-input-template .address-card").cloneNode(true);
         document.querySelector("#addresses").insertBefore(inputBox, document.querySelector("#address-add-button"));
         updateAddButtonState();
     }
@@ -22,6 +21,9 @@
         document.querySelector("#picker-submit").classList.remove("hidden");
     }
 </script>
+<div id="address-input-template" class="hidden">
+    {% include "address_input.html" %}
+</div>
 <form action="/results" method="GET" class="mx-auto" onchange="showSearchButton()" oninput="showSearchButton()">
     <div class="md:flex items-center">
         <div class="grid gap-4 grid-cols-1 md:grid-cols-3" id="addresses">
@@ -33,8 +35,8 @@
             {% include "address_input.html" %}
             {% endif %}
             <div id="address-add-button" class="flex items-center">
+                <button type="submit" class="mr-3 card ~neutral !low rounded-full h-12 flex items-center justify-center hidden" id="picker-submit" style="transition: all 150ms ease-in-out;">Search...</button>
                 <button onclick="addAddress(); return false;" type="button" class="appearance-none" id="picker-add"><i class="fas fa-lg fa-plus"></i></button>
-                <button type="submit" class="ml-3 card ~neutral !low rounded-full h-12 flex items-center justify-center hidden" id="picker-submit" style="transition: all 150ms ease-in-out;">Search...</button>
             </div>
         </div>
     </div>
