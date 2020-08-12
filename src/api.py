@@ -85,7 +85,6 @@ def _scores(election) -> dict:
 def _weighted_closeness_score(elections):
     total_weight = 0
     total_scores = 0
-
     for election in elections:
         weight = (election["year"] - 1975) ** 2
         total_weight += weight
