@@ -1,5 +1,9 @@
 <div class="card ~neutral !low">
-    <p class="label mb-4">Voting Impact Score <span class="text-neutral-600 text-xs">&times; 10<sup>7</sup></span></p>
+    <p class="label mb-4">Voting Impact Score <span class="text-neutral-600 text-xs">&times; 10<sup>7</sup></span>
+        {% with tooltip="This score is the product of the weighted average closeness score and the two most recent PPV scores for House elections the district." %}
+        {% include "tooltip.html" %}
+        {% endwith %}
+    </p>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         {% for loc, data in info %}
         <article class="w-full">
@@ -11,7 +15,11 @@
 </div>
 <hr class="sep h-4">
 <div class="card ~neutral !low">
-    <p class="label mb-4">Power Per Vote <span class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span></p>
+    <p class="label mb-4">Power Per Vote <span class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span>
+        {% with tooltip= ppvex + " This score is the average of the PPV for the last two elections in the district. " %}
+        {% include "tooltip.html" %}
+        {% endwith %}
+    </p>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         {% for loc, data in info %}
         <article class="w-full">
@@ -24,7 +32,11 @@
 </div>
 <hr class="sep h-4">
 <div class="card ~neutral !low desktop-limited-height">
-    <p class="label mb-4">Closeness History</p>
+    <p class="label mb-4">Closeness History
+        {% with tooltip= "The closeness score for an election is calculated by subtracting the percentage victory margin between the first and second place candidates from one." %}
+        {% include "tooltip.html" %}
+        {% endwith %}
+    </p>
     <canvas id="{{group}}Chart"></canvas>
     <script>buildChart(data.map(x => x[1].{{ group }}_history), labels, "{{group}}Chart")</script>
 </div>

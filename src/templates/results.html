@@ -26,7 +26,7 @@
         <div class="card ~neutral !low">
             <p class="label mb-4">Average Voting Impact Score <span
                 class="text-neutral-600 text-xs">&times; 10<sup>7</sup></span>
-                {% with tooltip="This score is the average of the voting impact score for senate, house, and presidential elections." %}
+                {% with tooltip="This score is the average of the voting impact score for house, senate, and presidential elections." %}
                 {% include "tooltip.html" %}
                 {% endwith %}
             </p>
@@ -43,7 +43,11 @@
         <hr class="sep h-4">
         <div class="card ~neutral !low">
             <p class="label mb-4">Average Power Per Vote <span
-                class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span></p>
+                class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span>
+                {% with tooltip="This is the average slice of a representative or elector that an individual vote corresponds to in house, senate, and presidential elections." %}
+                {% include "tooltip.html" %}
+                {% endwith %}
+            </p>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {% for loc, data in info %}
                 <article class="w-full">
@@ -56,7 +60,11 @@
         <hr class="sep h-4">
         <div class="card ~neutral !low">
             <p class="label mb-4">Average Weighted Closeness <span
-                class="text-neutral-600 text-xs">&times; 10<sup>2</sup></span></p>
+                class="text-neutral-600 text-xs">&times; 10<sup>2</sup></span>
+                {% with tooltip="This the average of the closeness for house, senate, and presidential elections since 1976. Increasingly recent elections are weighted more heavily according to the square of the number of years since 1975." %}
+                {% include "tooltip.html" %}
+                {% endwith %}
+            </p>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {% for loc, data in info %}
                 <article class="w-full">
@@ -76,7 +84,7 @@
             closeness. Higher numbers mean more voting power and more power per vote (PPV). Elections with a closeness score around 0 typically have only one candidate. </p>
     </div>
     <div class="md:w-2/3 self-start">
-        {% with group="house" %}
+        {% with group="house", ppvex="PPV for House elections the number of representatives (1) divided by voter turnout."%}
         {% include "result_group.html" %}
         {% endwith %}
     </div>
@@ -91,7 +99,7 @@
         </p>
     </div>
     <div class="md:w-2/3 self-start">
-        {% with group="senate" %}
+        {% with group="senate", ppvex="PPV for Senate elections the number of representatives up for election (1) divided by voter turnout."%}
         {% include "result_group.html" %}
         {% endwith %}
     </div>
@@ -105,7 +113,7 @@
             numbers mean more voting power and more power per vote (PPV).</p>
     </div>
     <div class="md:w-2/3 self-start">
-        {% with group="president" %}
+        {% with group="president", ppvex="PPV for Presidential elections is the number of electors divided by voter turnout." %}
         {% include "result_group.html" %}
         {% endwith %}
     </div>
