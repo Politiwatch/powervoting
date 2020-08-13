@@ -77,4 +77,9 @@ function highlightComparisons() {
     }
 }
 
+function loadTippy() {
+    tippy("[data-tippy-content]");
+}
+
 window.addEventListener("load", highlightComparisons);
+window.addEventListener("load", loadTippy);

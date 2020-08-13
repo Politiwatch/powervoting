@@ -23,6 +23,8 @@
     integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chroma-js@2.1.0/chroma.min.js"
     integrity="sha256-gX8uuyxN8stSMHWO9arnnKyenTOALaVAcVB3b6P87e4=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
   <script src="/static/base.js"></script>
 </head>
 
@@ -90,10 +92,9 @@
           weighted according to the square of the number of years since 1975.</p>
         <p>The power per vote (PPV) is calculated by dividing the average units of power in an election (1 for house and
           senate
-          elections, the number of electors in the state for presidential elections) over the two most recent election’s
-          turnouts in the district (or, in the case of senate and presidential elections, the state). More simply, this
-          metric quantifies the ‘slice’ of the representative or elector that
-          an individual vote corresponds to.</p>
+          elections, the number of electors in the state for presidential elections) over the two most recent elections&rsquo;
+          turnouts in the district with nonzero votes (or, in the case of senate and presidential elections, the state). More simply,
+          this metric quantifies the ‘slice’ of the representative or elector that an individual vote corresponds to.</p>
         <p>The overall impact score is the product of the overall closeness score and the most recent PPV score for the
           district multiplied by ten million (to make the number more accessible and intuitive). A higher impact score
           for a district means generally closer elections and more power per vote.</p>
