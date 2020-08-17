@@ -20,14 +20,11 @@ API_KEYS = os.getenv("API_KEYS").split(",")
 
 
 def get_address_info(address, zipcode):
-    print(zipcode)
     repdata = requests.get(
         "https://www.googleapis.com/civicinfo/v2/representatives",
         params={"address": f"{address} {zipcode}",
                 "key": random.choice(API_KEYS)},
     ).json()
-
-    print(repdata)
 
     if "normalizedInput" not in repdata:
         return None
