@@ -78,7 +78,8 @@ function highlightComparisons() {
 }
 
 function loadTippy() {
-    tippy("[data-tippy-content]");
+    console.log(tippy("[data-tippy-content]"));
+    console.log("Tippy initialized!");
 }
 
 window.addEventListener("load", highlightComparisons);
