@@ -16,9 +16,9 @@
     <div class="md:sticky mb-8 top-1 mr-8 md:w-1/3 self-start">
         <h3 class="heading mb-4 font-black">Overall Results</h3>
         <p class="mb-2">Within the US, the power and impact of your vote varies depending on where you live. We
-            calculate the voting power score for each address using the turnout, number of representatives, and
+            calculate the Voting Impact Score for each address using the turnout, number of representatives, and
             historical closeness in federal elections.</p>
-        <p class="content">&ldquo;Power per vote&rdquo; (PPV) is the number of representatives (senator, congresspeople, and
+        <p class="content">Vote Slice is the &ldquo;slice&rdquo; of the elected representatives (senator, congresspeople, and
             presidential electors) per vote. Higher numbers mean more impact per vote. See the <a
                 href="#appendix">Appendix</a> for more information.</p>
     </div>
@@ -42,7 +42,7 @@
         </div>
         <hr class="sep h-4">
         <div class="card ~neutral !low">
-            <p class="label mb-4">Average Power Per Vote <span
+            <p class="label mb-4">Average Vote Slice <span
                 class="text-neutral-600 text-xs">&times; 10<sup>6</sup></span>
                 {% with tooltip="This is the average slice of a representative or elector that an individual vote corresponds to in house, senate, and presidential elections." %}
                 {% include "tooltip.html" %}
@@ -52,7 +52,7 @@
                 {% for loc, data in info %}
                 <article class="w-full">
                     <p class="support">{% include "district_label.html" %}</p>
-                    <h3 class="heading text-xl comparison" data-comparison-group="overall-ppv">{{"%.2f"|format(data.ppv_total * 1000000)}}</h3>
+                    <h3 class="heading text-xl comparison" data-comparison-group="overall-vs">{{"%.2f"|format(data.vs_total * 1000000)}}</h3>
                 </article>
                 {% endfor %}
             </div>
@@ -80,11 +80,11 @@
 <div class="md:flex">
     <div class="md:sticky mb-8 top-1 mr-8 md:w-1/3 self-start">
         <h3 class="heading mb-2 font-black">House Results</h3>
-        <p>The voting power score in a House election is calculated according to the election’s turnout and historical
-            closeness. Higher numbers mean more voting power and more power per vote (PPV). Elections with a closeness score around 0 typically have only one candidate. </p>
+        <p>The Voting Impact Score in a House election is calculated according to the election’s turnout and historical
+            closeness. Higher numbers mean more voting impact and larger &ldquo;slice&rdquo; of the elected official per vote. Elections with a closeness score around 0 typically have only one candidate. </p>
     </div>
     <div class="md:w-2/3 self-start">
-        {% with group="house", ppvex="PPV for a House election is the number of representatives (1) divided by voter turnout."%}
+        {% with group="house", vsex="Vote Slice for a House election is the number of representatives (1) divided by voter turnout."%}
         {% include "result_group.html" %}
         {% endwith %}
     </div>
@@ -93,13 +93,13 @@
 <div class="md:flex">
     <div class="md:sticky mb-8 top-1 mr-8 md:w-1/3 self-start">
         <h3 class="heading mb-4 font-black">Senate Results</h3>
-        <p>The voting power score in a Senate election is calculated according to the election’s turnout and historical
-            closeness. PPV is proportional to the one senator up for election at a time. Higher numbers mean more voting
-            power and more power per vote (PPV).
+        <p>The Voting Impact Score in a Senate election is calculated according to the election’s turnout and historical
+            closeness in the state. Vote Slice is proportional to the one senator up for election at a time divided by the number of voters. Higher numbers mean more voting
+            power and larger &ldquo;slice&rdquo; of the elected official per vote.
         </p>
     </div>
     <div class="md:w-2/3 self-start">
-        {% with group="senate", ppvex="PPV for a Senate election is the number of representatives up for election (1) divided by voter turnout."%}
+        {% with group="senate", vsex="Vote Slice for a Senate election is the number of representatives up for election (1) divided by voter turnout."%}
         {% include "result_group.html" %}
         {% endwith %}
     </div>
@@ -108,12 +108,12 @@
 <div class="md:flex">
     <div class="md:sticky mb-8 top-1 mr-8 md:w-1/3 self-start">
         <h3 class="heading mb-4 font-black">Presidential Results</h3>
-        <p>The voting power score in a Presidential election is calculated according to the election’s turnout and
-            historical closeness. PPV is proportional to the state’s number of electors in the electoral college. Higher
-            numbers mean more voting power and more power per vote (PPV).</p>
+        <p>The Voting Impact Score in a Presidential election is calculated according to the election’s turnout and
+            historical closeness in the state. Vote Slice is proportional to the state’s number of electors in the electoral college. Higher
+            numbers mean more voting impact and larger &ldquo;slice&rdquo; of the state’s electors per vote</p>
     </div>
     <div class="md:w-2/3 self-start">
-        {% with group="president", ppvex="PPV for a presidential election is the number of electors divided by voter turnout." %}
+        {% with group="president", vsex="Vote Slice for a presidential election is the number of electors for the state divided by voter turnout." %}
         {% include "result_group.html" %}
         {% endwith %}
     </div>

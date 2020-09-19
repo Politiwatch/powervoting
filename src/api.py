@@ -53,20 +53,20 @@ def get_elections(state, district):
     return list(filter(lambda k: k["state"] == state and k["district"] in [None, "statewide", district, "0"], ELECTIONS))
 
 
-def _ppv(election):
-    """Power per vote"""
+def _vs(election):
+    """Vote slice"""
 
     if election["office"] == "US President":
         return _electors(election["state"], election["year"]) / max(1, election["totalvotes"])
     else:
         return 1 / max(1, election["totalvotes"])
 
-def _current_ppv(elections):
+def _current_vs(elections):
     processed_elections = sorted(filter(lambda k: k["totalvotes"] > 1, elections), key=lambda k: k["year"])
-    return (sum([_ppv(elec) for elec in processed_elections[-2:]]) / len(processed_elections[-2:]))
+    return (sum([_vs(elec) for elec in processed_elections[-2:]]) / len(processed_elections[-2:]))
 
-def _compound_score(closeness, ppv):
-    return closeness * ppv * 10000000
+def _compound_score(closeness, vs):
+    return closeness * vs * 10000000
 
 
 def _scores(election) -> dict:
@@ -75,12 +75,12 @@ def _scores(election) -> dict:
     totalvotes = election['totalvotes']
 
     closeness = 1 - ((votes[0] - votes[1]) / max(1, totalvotes))
-    ppv = _ppv(election)
+    vs = _vs(election)
 
     return {
         "closeness": closeness,
-        "ppv": ppv,
-        "compound": _compound_score(closeness, ppv)
+        "vs": vs,
+        "compound": _compound_score(closeness, vs)
     }
 
 
@@ -97,18 +97,18 @@ def _weighted_closeness_score(elections):
 
 def compute_scores(elections):
     senate = list(sorted(filter(
-        lambda k: k["office"] == "US Senate", elections), key=lambda k: k["year"]))
+        lambda k: k["office"] == "US Senate" and k["county"] == None, elections), key=lambda k: k["year"]))
     house = list(sorted(filter(
         lambda k: k["office"] == "US House", elections), key=lambda k: k["year"]))
     president = list(sorted(filter(
-        lambda k: k["office"] == "US President", elections), key=lambda k: k["year"]))
+        lambda k: k["office"] == "US President" and k["county"] == None, elections), key=lambda k: k["year"]))
 
     senate_score = _compound_score(
-        _weighted_closeness_score(senate), _current_ppv(senate))
+        _weighted_closeness_score(senate), _current_vs(senate))
     house_score = _compound_score(
-        _weighted_closeness_score(house), _current_ppv(house))
+        _weighted_closeness_score(house), _current_vs(house))
     president_score = _compound_score(
-        _weighted_closeness_score(president), _current_ppv(president))
+        _weighted_closeness_score(president), _current_vs(president))
 
     senate_history = list(senate)
     for election in senate_history:
@@ -131,8 +131,8 @@ def compute_scores(elections):
         "president_history": president_history,
         "total": (senate_score + house_score + president_score) / 3,
         "closeness_total": (_weighted_closeness_score(senate) + _weighted_closeness_score(house) + _weighted_closeness_score(president)) / 3,
-        "ppv_total": (_current_ppv(senate) + _current_ppv(house) + _current_ppv(president)) / 3,
-        "ppv_senate": _current_ppv(senate),
-        "ppv_house": _current_ppv(house),
-        "ppv_president": _current_ppv(president),
+        "vs_total": (_current_vs(senate) + _current_vs(house) + _current_vs(president)) / 3,
+        "vs_senate": _current_vs(senate),
+        "vs_house": _current_vs(house),
+        "vs_president": _current_vs(president),
     }
