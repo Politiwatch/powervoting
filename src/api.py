@@ -49,6 +49,19 @@ def get_address_info(address, zipcode):
     }
 
 
+def get_all_scores():
+    """Not frequently used"""
+    scores = {}
+    for state in set([election["state"] for election in ELECTIONS]):
+        for district in set([election["district"] for election in filter(lambda k: k["state"] == state, ELECTIONS)]):
+            elections = get_elections(state, district)
+            try:
+                scores[(state, district)] = compute_scores(elections)
+            except Exception as e:
+                print(f"{state}, {district} failed: {e}")
+    return scores
+
+
 def get_elections(state, district):
     return list(filter(lambda k: k["state"] == state and k["district"] in [None, "statewide", district, "0"], ELECTIONS))
 
